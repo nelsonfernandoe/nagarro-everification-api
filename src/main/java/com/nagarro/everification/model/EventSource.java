@@ -1,7 +1,10 @@
 package com.nagarro.everification.model;
 
+import com.nagarro.everification.payload.request.EventSourcePatchRequest;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
@@ -34,7 +37,7 @@ public class EventSource {
     @Column(name="transaction_currency")
     private String transactionCurrency;
 
-    @NotBlank
+    @NotNull
     @Column(name="transaction_amount")
     private Double transactionAmount;
 
@@ -60,7 +63,7 @@ public class EventSource {
 
     @NotBlank
     @Column(name="account_info_mkr")
-    private String accountIInfoMkr;
+    private String accountInfoMkr;
 
     @NotBlank
     @Column(name="outcome")
@@ -86,11 +89,9 @@ public class EventSource {
     @Column(name="created_by")
     private String createdBy;
 
-    @NotBlank
     @Column(name="created_on")
     private Date createdOn;
 
-    @NotBlank
     @Column(name="updated_on")
     private Date updatedOn;
     private String updatedBy;
@@ -206,12 +207,12 @@ public class EventSource {
         this.custInfoMkr = custInfoMkr;
     }
 
-    public String getAccountIInfoMkr() {
-        return accountIInfoMkr;
+    public String getAccountInfoMkr() {
+        return accountInfoMkr;
     }
 
-    public void setAccountIInfoMkr(String accountIInfoMkr) {
-        this.accountIInfoMkr = accountIInfoMkr;
+    public void setAccountInfoMkr(String accountIInfoMkr) {
+        this.accountInfoMkr = accountIInfoMkr;
     }
 
     public String getOutcome() {
