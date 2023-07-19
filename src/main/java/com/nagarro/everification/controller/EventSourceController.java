@@ -43,11 +43,14 @@ public class EventSourceController {
     }
 
     @PatchMapping()
-    public ResponseEntity<EventSource> updateEventSource(@RequestBody EventSourcePatchRequest eventSourceReq,
-                                                         Principal currentPrincipal) throws EverificationNotFoundException {
-        System.out.println("currentPrincipal = " + currentPrincipal);
+    public ResponseEntity<EventSource> updateEventSource(@RequestBody EventSourcePatchRequest eventSourceReq, Principal currentPrincipal) throws EverificationNotFoundException {
         EventSource body = eventSourceService.patchEventSource(eventSourceReq);
         return ResponseEntity.ok().body(body);
+    }
+
+    @PatchMapping("/{id}/assign")
+    public ResponseEntity<EventSource> assignUser(@PathVariable Long id) throws EverificationNotFoundException {
+        return ResponseEntity.ok().body(eventSourceService.assignUser(id));
     }
 
 }

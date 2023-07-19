@@ -18,5 +18,8 @@ public interface EventSourceService {
 
     EverificationDataResponse statusCount();
 
+    EventSource assignUser(Long id) throws EverificationNotFoundException;
+
     EventSource patchEventSource(EventSourcePatchRequest patchRequest) throws EverificationNotFoundException;
+
 }

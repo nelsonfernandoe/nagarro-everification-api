@@ -1,11 +1,13 @@
 package com.nagarro.everification.model;
 
 import com.nagarro.everification.payload.request.EventSourcePatchRequest;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "event_source")
@@ -93,7 +95,7 @@ public class EventSource {
     private Date createdOn;
 
     @Column(name="updated_on")
-    private Date updatedOn;
+    private Timestamp updatedOn;
     private String updatedBy;
 
     @NotBlank
@@ -271,11 +273,11 @@ public class EventSource {
         this.createdOn = createdOn;
     }
 
-    public Date getUpdatedOn() {
+    public Timestamp getUpdatedOn() {
         return updatedOn;
     }
 
-    public void setUpdatedOn(Date updatedOn) {
+    public void setUpdatedOn(Timestamp updatedOn) {
         this.updatedOn = updatedOn;
     }
 

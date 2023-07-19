@@ -10,8 +10,12 @@ import com.nagarro.everification.to.EventSourceCountByStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -50,6 +54,22 @@ public class EventSourceServiceImpl implements EventSourceService {
     }
 
     @Override
+    public EventSource assignUser(Long id) throws EverificationNotFoundException {
+        EventSource eventSource = eventSourceRepository.findById(id)
+                .orElseThrow(() -> new EverificationNotFoundException("Everification data Not Found with id: " + id));
+
+        String currentUsername = getCurrentUsername();
+        eventSource.setLockedBy(currentUsername);
+
+        /* add audit details */
+        eventSource.setUpdatedBy(currentUsername);
+        Timestamp updatedOn = Timestamp.from(Instant.now());
+        eventSource.setUpdatedOn(updatedOn);
+
+        return eventSourceRepository.save(eventSource);
+    }
+
+    @Override
     public EventSource patchEventSource(EventSourcePatchRequest patchRequest) throws EverificationNotFoundException {
         EventSource eventSource = eventSourceRepository.findById(patchRequest.id())
                 .orElseThrow(() -> new EverificationNotFoundException("Everification data Not Found with id: " + patchRequest.id()));
@@ -63,7 +83,15 @@ public class EventSourceServiceImpl implements EventSourceService {
         eventSource.setStatus(patchRequest.status());
 
         /* add audit details */
+        eventSource.setUpdatedBy(getCurrentUsername());
+        Timestamp updatedOn = Timestamp.from(Instant.now());
+        eventSource.setUpdatedOn(updatedOn);
 
         return eventSourceRepository.save(eventSource);
+    }
+
+    private String getCurrentUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
     }
 }
