@@ -7,6 +7,8 @@ import com.nagarro.everification.payload.response.EverificationDataResponse;
 import com.nagarro.everification.payload.response.EverificationResponse;
 import com.nagarro.everification.repository.EventSourceRepository;
 import com.nagarro.everification.to.EventSourceCountByStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ import java.util.List;
 
 @Service
 public class EventSourceServiceImpl implements EventSourceService {
+    private static final Logger LOG = LoggerFactory.getLogger(EventSourceServiceImpl.class);
 
     @Autowired
     private EventSourceRepository eventSourceRepository;
@@ -37,8 +40,10 @@ public class EventSourceServiceImpl implements EventSourceService {
 
     @Override
     public EverificationResponse getByStatus(String status) throws EverificationNotFoundException {
+        LOG.info("Event source requested by status: {}", status);
+
         /*Get data based on status */
-        String derivedStatus = status.isEmpty() ? "Unassigned" : status;
+        String derivedStatus = status.isEmpty() ? "unassigned" : status;
 
         List<EventSource> eventSources = eventSourceRepository
                 .findByStatus(derivedStatus)
@@ -49,12 +54,15 @@ public class EventSourceServiceImpl implements EventSourceService {
 
     @Override
     public EverificationDataResponse statusCount() {
+        LOG.info("Event source status count requested");
         List<EventSourceCountByStatus> eventSources = eventSourceRepository.getCountByStatus();
         return new EverificationDataResponse(eventSources);
     }
 
     @Override
     public EventSource assignUser(Long id) throws EverificationNotFoundException {
+        LOG.info("Event source id {} assigned to current user requested", id);
+
         EventSource eventSource = eventSourceRepository.findById(id)
                 .orElseThrow(() -> new EverificationNotFoundException("Everification data Not Found with id: " + id));
 
@@ -71,6 +79,8 @@ public class EventSourceServiceImpl implements EventSourceService {
 
     @Override
     public EventSource patchEventSource(EventSourcePatchRequest patchRequest) throws EverificationNotFoundException {
+        LOG.info("Event source id {} is requested for updating", patchRequest.id());
+
         EventSource eventSource = eventSourceRepository.findById(patchRequest.id())
                 .orElseThrow(() -> new EverificationNotFoundException("Everification data Not Found with id: " + patchRequest.id()));
 
