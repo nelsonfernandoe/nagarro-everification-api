@@ -20,7 +20,7 @@ import java.security.Principal;
 public class EventSourceController {
 
     @Autowired
-    EventSourceService eventSourceService;
+    private EventSourceService eventSourceService;
 
     @GetMapping("")
     public Page<EventSource> findAll(Pageable pageable) {

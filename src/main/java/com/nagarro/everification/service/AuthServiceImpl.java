@@ -22,22 +22,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl implements AuthService {
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    PasswordEncoder encoder;
+    private PasswordEncoder encoder;
 
     @Autowired
-    JwtUtils jwtUtils;
+    private JwtUtils jwtUtils;
 
     @Override
-    public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
-        String password = loginRequest.getPassword();
+    public ResponseEntity<UserInfoResponse> authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), password));
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
+                        loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -51,7 +51,6 @@ public class AuthServiceImpl implements AuthService {
                         userDetails.getUsername(),
                         userDetails.getBu()));
     }
-
 
     @Override
     public ResponseEntity<?> registerUser(SignupRequest signUpRequest) {

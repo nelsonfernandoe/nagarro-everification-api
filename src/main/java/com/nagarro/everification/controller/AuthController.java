@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
     @Autowired
-    AuthService authService;
+    private AuthService authService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {

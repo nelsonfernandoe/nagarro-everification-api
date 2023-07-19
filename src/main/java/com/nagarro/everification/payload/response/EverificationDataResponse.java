@@ -12,12 +12,17 @@ public class EverificationDataResponse {
 //    Map<String, Long> everificationEntities;
 
     @JsonProperty(value = "everificationData")
-    List<EventSourceCountByStatus> eventSourceCountByStatuses;
+    private List<EventSourceCountByStatus> eventSourceCountByStatuses;
 
     public EverificationDataResponse(List<EventSourceCountByStatus> eventSourceCountByStatuses) {
-//        this.everificationEntities = eventSourceCountByStatuses.stream()
-//                .collect(Collectors.toMap(EventSourceCountByStatus::getStatus, EventSourceCountByStatus::getCount));
+        this.eventSourceCountByStatuses = eventSourceCountByStatuses;
+    }
 
+    public List<EventSourceCountByStatus> getEventSourceCountByStatuses() {
+        return eventSourceCountByStatuses;
+    }
+
+    public void setEventSourceCountByStatuses(List<EventSourceCountByStatus> eventSourceCountByStatuses) {
         this.eventSourceCountByStatuses = eventSourceCountByStatuses;
     }
 }

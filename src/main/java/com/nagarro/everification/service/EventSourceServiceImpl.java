@@ -22,7 +22,7 @@ import java.util.List;
 public class EventSourceServiceImpl implements EventSourceService {
 
     @Autowired
-    EventSourceRepository eventSourceRepository;
+    private EventSourceRepository eventSourceRepository;
 
     @Override
     public EventSource findById(Long id) throws EverificationNotFoundException {
