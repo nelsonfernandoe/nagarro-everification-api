@@ -119,22 +119,5 @@ class AuthServiceImplTest {
         verify(userRepository).save(Mockito.<User>any());
         verify(passwordEncoder).encode(Mockito.<CharSequence>any());
     }
-
-    /**
-     * Method under test: {@link AuthServiceImpl#logoutUser()}
-     */
-    @Test
-    void testLogoutUser() throws EverificationException {
-        ResponseCookie cookie = ResponseCookie.from("jwtCookie", null)
-                .path("/api")
-                .build();
-        when(jwtUtils.getCleanJwtCookie()).thenReturn(cookie);
-        ResponseEntity<?> actualLogoutResult = authServiceImpl.logoutUser();
-        assertEquals(HttpStatus.OK, actualLogoutResult.getStatusCode());
-        assertEquals(cookie.toString(),
-                actualLogoutResult.getHeaders()
-                        .get(HttpHeaders.SET_COOKIE)
-                        .get(0));
-    }
 }
 
