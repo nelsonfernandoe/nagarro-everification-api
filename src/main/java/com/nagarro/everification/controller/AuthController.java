@@ -34,9 +34,4 @@ public class AuthController {
         return authService.registerUser(signUpRequest);
     }
 
-    @PostMapping("/signout")
-    public ResponseEntity<?> logoutUser() throws EverificationException {
-        LOG.info("Sign out requested.");
-        return authService.logoutUser();
-    }
 }

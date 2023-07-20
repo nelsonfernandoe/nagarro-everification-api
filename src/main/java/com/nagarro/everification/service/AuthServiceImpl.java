@@ -86,17 +86,4 @@ public class AuthServiceImpl implements AuthService {
             throw new EverificationException("Some error occurred. Please try again later.", e);
         }
     }
-
-    @Override
-    public ResponseEntity<?> logoutUser() throws EverificationException {
-        try {
-            ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                    .body(new MessageResponse("You've been signed out!"));
-        } catch (Exception e) {
-            LOG.error("Some error occurred. Please try again later.", e);
-            throw new EverificationException("Some error occurred. Please try again later.", e);
-        }
-    }
 }

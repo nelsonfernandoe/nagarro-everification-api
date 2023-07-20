@@ -9,6 +9,4 @@ public interface AuthService {
     ResponseEntity<?> authenticateUser(LoginRequest loginRequest) throws EverificationException;
 
     ResponseEntity<?> registerUser(SignupRequest signUpRequest) throws EverificationException;
-
-    ResponseEntity<?> logoutUser() throws EverificationException;
 }
