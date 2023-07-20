@@ -1,5 +1,6 @@
 package com.nagarro.everification.service;
 
+import com.nagarro.everification.exception.EverificationException;
 import com.nagarro.everification.exception.EverificationNotFoundException;
 import com.nagarro.everification.model.EventSource;
 import com.nagarro.everification.payload.request.EventSourcePatchRequest;
@@ -42,7 +43,7 @@ class EventSourceServiceImplTest {
      * Method under test: {@link EventSourceServiceImpl#findById(Long)}
      */
     @Test
-    void testFindById() throws EverificationNotFoundException {
+    void testFindById() throws EverificationNotFoundException, EverificationException {
         EventSource eventSource = new EventSource();
         eventSource.setAccountCurrency("GBP");
         eventSource.setAccountInfoMkr("3");
@@ -88,7 +89,7 @@ class EventSourceServiceImplTest {
      * Method under test: {@link EventSourceServiceImpl#findAll(Pageable)}
      */
     @Test
-    void testFindAll() {
+    void testFindAll() throws EverificationException {
         PageImpl<EventSource> pageImpl = new PageImpl<>(new ArrayList<>());
         when(eventSourceRepository.findAll(Mockito.<Pageable>any())).thenReturn(pageImpl);
         Page<EventSource> actualFindAllResult = eventSourceServiceImpl.findAll(null);
@@ -101,7 +102,7 @@ class EventSourceServiceImplTest {
      * Method under test: {@link EventSourceServiceImpl#getByStatus(String)}
      */
     @Test
-    void testGetByStatus() throws EverificationNotFoundException {
+    void testGetByStatus() throws EverificationNotFoundException, EverificationException {
         EventSource eventSource = new EventSource();
         eventSource.setAccountCurrency("GBP");
         eventSource.setAccountInfoMkr("3");
@@ -155,7 +156,7 @@ class EventSourceServiceImplTest {
      * Method under test: {@link EventSourceServiceImpl#statusCount()}
      */
     @Test
-    void testStatusCount() {
+    void testStatusCount() throws EverificationException {
         List<EventSourceCountByStatus> list = new ArrayList<>();
         list.add(new EventSourceCountByStatus("s1", 1L));
         when(eventSourceRepository.getCountByStatus()).thenReturn(list);
@@ -171,7 +172,7 @@ class EventSourceServiceImplTest {
      */
     @Test
     @WithMockUser(username = "foo")
-    void testAssignUser() throws EverificationNotFoundException {
+    void testAssignUser() throws EverificationNotFoundException, EverificationException {
         EventSource eventSource = new EventSource();
         eventSource.setAccountCurrency("GBP");
         eventSource.setAccountInfoMkr("3");
@@ -222,7 +223,7 @@ class EventSourceServiceImplTest {
      */
     @Test
     @WithMockUser(username = "foo")
-    void testPatchEventSource() throws EverificationNotFoundException {
+    void testPatchEventSource() throws EverificationNotFoundException, EverificationException {
         // TODO: Complete this test.
         //   Reason: R013 No inputs found that don't throw a trivial exception.
         //   Diffblue Cover tried to run the arrange/act section, but the method under

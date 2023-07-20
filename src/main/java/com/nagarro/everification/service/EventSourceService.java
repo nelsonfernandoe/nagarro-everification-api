@@ -1,5 +1,6 @@
 package com.nagarro.everification.service;
 
+import com.nagarro.everification.exception.EverificationException;
 import com.nagarro.everification.exception.EverificationNotFoundException;
 import com.nagarro.everification.model.EventSource;
 import com.nagarro.everification.payload.request.EventSourcePatchRequest;
@@ -10,16 +11,16 @@ import org.springframework.data.domain.Pageable;
 
 public interface EventSourceService {
 
-    EventSource findById(Long id) throws EverificationNotFoundException;
+    EventSource findById(Long id) throws EverificationNotFoundException, EverificationException;
 
-    Page<EventSource> findAll(Pageable pageable);
+    Page<EventSource> findAll(Pageable pageable) throws EverificationException;
 
-    EverificationResponse getByStatus(String status) throws EverificationNotFoundException;
+    EverificationResponse getByStatus(String status) throws EverificationNotFoundException, EverificationException;
 
-    EverificationDataResponse statusCount();
+    EverificationDataResponse statusCount() throws EverificationException;
 
-    EventSource assignUser(Long id) throws EverificationNotFoundException;
+    EventSource assignUser(Long id) throws EverificationNotFoundException, EverificationException;
 
-    EventSource patchEventSource(EventSourcePatchRequest patchRequest) throws EverificationNotFoundException;
+    EventSource patchEventSource(EventSourcePatchRequest patchRequest) throws EverificationNotFoundException, EverificationException;
 
 }

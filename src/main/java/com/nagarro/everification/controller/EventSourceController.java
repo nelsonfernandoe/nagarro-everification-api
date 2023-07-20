@@ -1,20 +1,17 @@
 package com.nagarro.everification.controller;
 
+import com.nagarro.everification.exception.EverificationException;
 import com.nagarro.everification.exception.EverificationNotFoundException;
 import com.nagarro.everification.model.EventSource;
 import com.nagarro.everification.payload.request.EventSourcePatchRequest;
 import com.nagarro.everification.payload.response.EverificationDataResponse;
 import com.nagarro.everification.payload.response.EverificationResponse;
 import com.nagarro.everification.service.EventSourceService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @CrossOrigin(originPatterns = "*", maxAge = 3600, allowCredentials = "true")
 @RestController
@@ -25,34 +22,43 @@ public class EventSourceController {
     private EventSourceService eventSourceService;
 
     @GetMapping("")
-    public Page<EventSource> findAll(Pageable pageable) {
+    public Page<EventSource> findAll(Pageable pageable) throws EverificationException {
         return eventSourceService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EventSource> findById(@PathVariable Long id) throws EverificationNotFoundException {
-        return ResponseEntity.ok().body(eventSourceService.findById(id));
+    public ResponseEntity<EventSource> findById(
+            @PathVariable Long id) throws EverificationNotFoundException, EverificationException {
+        return ResponseEntity.ok()
+                .body(eventSourceService.findById(id));
     }
 
     @GetMapping("/getByStatus")
-    public ResponseEntity<EverificationResponse> getByStatus(@RequestParam String status) throws EverificationNotFoundException {
-        return ResponseEntity.ok().body(eventSourceService.getByStatus(status));
+    public ResponseEntity<EverificationResponse> getByStatus(
+            @RequestParam String status) throws EverificationNotFoundException, EverificationException {
+        return ResponseEntity.ok()
+                .body(eventSourceService.getByStatus(status));
     }
 
     @GetMapping("/statusCount")
-    public ResponseEntity<EverificationDataResponse> statusCount() {
-        return ResponseEntity.ok().body(eventSourceService.statusCount());
+    public ResponseEntity<EverificationDataResponse> statusCount() throws EverificationException {
+        return ResponseEntity.ok()
+                .body(eventSourceService.statusCount());
     }
 
     @PatchMapping()
-    public ResponseEntity<EventSource> updateEventSource(@RequestBody EventSourcePatchRequest eventSourceReq, Principal currentPrincipal) throws EverificationNotFoundException {
+    public ResponseEntity<EventSource> updateEventSource(
+            @RequestBody EventSourcePatchRequest eventSourceReq) throws EverificationNotFoundException, EverificationException {
         EventSource body = eventSourceService.patchEventSource(eventSourceReq);
-        return ResponseEntity.ok().body(body);
+        return ResponseEntity.ok()
+                .body(body);
     }
 
     @PatchMapping("/{id}/assign")
-    public ResponseEntity<EventSource> assignUser(@PathVariable Long id) throws EverificationNotFoundException {
-        return ResponseEntity.ok().body(eventSourceService.assignUser(id));
+    public ResponseEntity<EventSource> assignUser(
+            @PathVariable Long id) throws EverificationNotFoundException, EverificationException {
+        return ResponseEntity.ok()
+                .body(eventSourceService.assignUser(id));
     }
 
 }

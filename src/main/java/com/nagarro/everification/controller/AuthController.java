@@ -1,5 +1,6 @@
 package com.nagarro.everification.controller;
 
+import com.nagarro.everification.exception.EverificationException;
 import com.nagarro.everification.payload.request.LoginRequest;
 import com.nagarro.everification.payload.request.SignupRequest;
 import com.nagarro.everification.service.AuthService;
@@ -22,19 +23,19 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws EverificationException {
         LOG.info("Login requested for user: {}", loginRequest.getUsername());
         return authService.authenticateUser(loginRequest);
     }
 
     @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws EverificationException {
         LOG.info("Registration requested for user: {}", signUpRequest.getUsername());
         return authService.registerUser(signUpRequest);
     }
 
     @PostMapping("/signout")
-    public ResponseEntity<?> logoutUser() {
+    public ResponseEntity<?> logoutUser() throws EverificationException {
         LOG.info("Sign out requested.");
         return authService.logoutUser();
     }

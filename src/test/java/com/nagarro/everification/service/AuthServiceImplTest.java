@@ -1,5 +1,6 @@
 package com.nagarro.everification.service;
 
+import com.nagarro.everification.exception.EverificationException;
 import com.nagarro.everification.model.User;
 import com.nagarro.everification.payload.request.LoginRequest;
 import com.nagarro.everification.payload.request.SignupRequest;
@@ -52,7 +53,7 @@ class AuthServiceImplTest {
      * Method under test: {@link AuthServiceImpl#authenticateUser(LoginRequest)}
      */
     @Test
-    void testAuthenticateUser() throws AuthenticationException {
+    void testAuthenticateUser() throws AuthenticationException, EverificationException {
         ResponseCookie cookie = ResponseCookie.from("jwtCookie", "dummyToken")
                 .path("/api")
                 .maxAge(24 * 60 * 60)
@@ -74,7 +75,7 @@ class AuthServiceImplTest {
      * Method under test: {@link AuthServiceImpl#registerUser(SignupRequest)}
      */
     @Test
-    void testRegisterUser() {
+    void testRegisterUser() throws EverificationException {
         when(userRepository.existsByUsername(Mockito.<String>any())).thenReturn(true);
 
         SignupRequest signUpRequest = new SignupRequest();
@@ -94,7 +95,7 @@ class AuthServiceImplTest {
      * Method under test: {@link AuthServiceImpl#registerUser(SignupRequest)}
      */
     @Test
-    void testRegisterUser2() {
+    void testRegisterUser2() throws EverificationException {
         User user = new User();
         user.setBu("Bu");
         user.setId(1L);
@@ -123,7 +124,7 @@ class AuthServiceImplTest {
      * Method under test: {@link AuthServiceImpl#logoutUser()}
      */
     @Test
-    void testLogoutUser() {
+    void testLogoutUser() throws EverificationException {
         ResponseCookie cookie = ResponseCookie.from("jwtCookie", null)
                 .path("/api")
                 .build();
@@ -132,7 +133,8 @@ class AuthServiceImplTest {
         assertEquals(HttpStatus.OK, actualLogoutResult.getStatusCode());
         assertEquals(cookie.toString(),
                 actualLogoutResult.getHeaders()
-                        .get(HttpHeaders.SET_COOKIE).get(0));
+                        .get(HttpHeaders.SET_COOKIE)
+                        .get(0));
     }
 }
 
